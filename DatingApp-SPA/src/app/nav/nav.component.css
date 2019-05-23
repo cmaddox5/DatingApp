@@ -5,3 +5,7 @@
 .dropdown-item {
     cursor: pointer;
 }
+
+.dropdown-item:hover{
+    color: #FFFFFF !important;
+}
