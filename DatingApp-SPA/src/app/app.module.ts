@@ -27,50 +27,52 @@ import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
 import { MemberListResolver } from './_resolvers/member-list.resolver';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { MemberEditResolver } from './_resolvers/member-edit.resolver';
+import { PreventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.guard';
 
 export function tokenGetter() {
-    return localStorage.getItem('token');
+  return localStorage.getItem('token');
 }
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        NavComponent,
-        HomeComponent,
-        RegisterComponent,
-        MemberListComponent,
-        ListsComponent,
-        MessagesComponent,
-        MemberCardComponent,
-        MemberDetailComponent,
-        MemberEditComponent
-    ],
-    imports: [
-        BrowserModule,
-        HttpClientModule,
-        FormsModule,
-        BsDropdownModule.forRoot(),
-        TabsModule.forRoot(),
-        RouterModule.forRoot(appRoutes),
-        JwtModule.forRoot({
-            config: {
-                tokenGetter: tokenGetter,
-                whitelistedDomains: ['localhost:5000'],
-                blacklistedRoutes: ['localhost:5000/api/auth']
-            }
-        }),
-        NgxGalleryModule
-    ],
-    providers: [
-        AuthService,
-        ErrorInterceptorProvider,
-        AlertifyService,
-        AuthGuard,
-        UserService,
-        MemberDetailResolver,
-        MemberListResolver,
-        MemberEditResolver
-    ],
-    bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    NavComponent,
+    HomeComponent,
+    RegisterComponent,
+    MemberListComponent,
+    ListsComponent,
+    MessagesComponent,
+    MemberCardComponent,
+    MemberDetailComponent,
+    MemberEditComponent
+  ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    FormsModule,
+    BsDropdownModule.forRoot(),
+    TabsModule.forRoot(),
+    RouterModule.forRoot(appRoutes),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        whitelistedDomains: ['localhost:5000'],
+        blacklistedRoutes: ['localhost:5000/api/auth']
+      }
+    }),
+    NgxGalleryModule
+  ],
+  providers: [
+    AuthService,
+    ErrorInterceptorProvider,
+    AlertifyService,
+    AuthGuard,
+    UserService,
+    MemberDetailResolver,
+    MemberListResolver,
+    MemberEditResolver,
+    PreventUnsavedChangesGuard
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}
