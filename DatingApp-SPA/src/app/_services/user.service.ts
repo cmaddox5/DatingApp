@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../_models/user';
 import { PaginatedResult } from '../_models/pagination';
+import { AlertifyService } from './alertify.service';
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +13,7 @@ import { PaginatedResult } from '../_models/pagination';
 export class UserService {
     baseUrl = environment.apiUrl;
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private alertify: AlertifyService) {}
 
     getUsers(
         page?,
@@ -73,6 +74,13 @@ export class UserService {
     deletePhoto(userId: number, id: number) {
         return this.http.delete(
             this.baseUrl + 'users/' + userId + '/photos/' + id
+        );
+    }
+
+    sendLike(id: number, recipientId: number) {
+        return this.http.post(
+            this.baseUrl + 'users/' + id + '/like/' + recipientId,
+            {}
         );
     }
 }
