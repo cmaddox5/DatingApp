@@ -43,7 +43,6 @@ export class MemberMessagesComponent implements OnInit {
                                 currentUserId,
                                 messages[i].id
                             );
-                            console.log('Test');
                         }
                     }
                 })
