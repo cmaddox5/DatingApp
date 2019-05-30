@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -83,12 +84,14 @@ namespace DatingApp.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateMessage(int userId, MessageForCreationDto messageForCreationDto)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            var sender = await _repo.GetUserAsync(userId);
+
+            if (sender.Id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
             {
                 return Unauthorized();
             }
 
-            messageForCreationDto.SenderId = userId;
+            messageForCreationDto.SenderId = sender.Id;
 
             var recipient = await _repo.GetUserAsync(messageForCreationDto.RecipientId);
 
@@ -101,10 +104,9 @@ namespace DatingApp.API.Controllers
 
             _repo.Add<Message>(message);
 
-            var messageToReturn = _mapper.Map<MessageForCreationDto>(message);
-
             if (await _repo.SaveAllAsync())
             {
+                var messageToReturn = _mapper.Map<MessageToReturnDto>(message);
                 return CreatedAtRoute("GetMessage", new { id = message.Id }, messageToReturn);
             }
 
